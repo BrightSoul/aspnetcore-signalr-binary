@@ -2,7 +2,7 @@
 Questa è un'applicazione ASP.NET Core che dimostra come usare ASP.NET Core SignalR per fare push di contenuti binari dal server verso i client connessi.
 
 ## Requisiti
-È necessario avere installato .NET Core SDK 2.2. L'applicazione è stata creata con Visual Studio Code ma può essere eseguita anche da Visual Studio 2017 o superiore.
+È necessario avere installato .NET Core SDK 5.0.100. L'applicazione è stata creata con Visual Studio Code ma può essere eseguita anche da Visual Studio 2019 o superiore.
 
 ## Panoramica
 Nell'applicazione c'è un _hosted service_ che ogni secondo genera un'immagine PNG che reca l'ora corrente e un colore di sfondo casuale. L'immagine così generata viene inviata ai client connessi grazie a un _hub_ di ASP.NET Core SignalR, configurato per sfruttare il trasporto binario [MessagePack](https://msgpack.org/).
