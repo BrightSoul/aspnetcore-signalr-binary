@@ -35,7 +35,7 @@ namespace AspNetCoreRealtimeBinary.Models.Services.Infrastructure
             {
                 StatusChanged?.Invoke(this, toStatus);
                 onSuccess?.Invoke();
-                return (true, previousStatus);
+                return (true, currentStatus);
             }
             return (false, previousStatus);
         }

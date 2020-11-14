@@ -2,7 +2,7 @@
 Questa è un'applicazione ASP.NET Core che dimostra come usare ASP.NET Core SignalR per fare push di contenuti binari dal server verso i client connessi. I client hanno la facoltà di avviare/arrestare l'invio dei contenuti.
 
 ## Requisiti
-È necessario avere installato .NET Core SDK 2.2. L'applicazione è stata creata con Visual Studio Code ma può essere eseguita anche da Visual Studio 2017 o superiore.
+È necessario avere installato .NET Core SDK 5.0.100. L'applicazione è stata creata con Visual Studio Code ma può essere eseguita anche da Visual Studio 2019 o superiore.
 
 ## Panoramica
 Nell'applicazione c'è un _hosted service_ che ogni secondo genera un'immagine PNG che reca l'ora corrente e un colore di sfondo casuale. L'immagine così generata viene inviata ai client connessi grazie a un _hub_ di ASP.NET Core SignalR, configurato per sfruttare il trasporto binario [MessagePack](https://msgpack.org/).
@@ -29,7 +29,7 @@ L'esecuzione di attività in background per mezzo di _hosted service_ è anche d
  5. Creata la classe [Hubs/ImageStreamHub.cs](Hubs/ImageStreamHub.cs) che è l'_hub_ di ASP.NET Core SignalR usato per inviare dati binari ai client;
      * L'_hub_ contiene i metodi _Start_ e _Stop_ che saranno invocati dai client JavaScript;
      * L'_hub_ traccia connessioni e disconnessioni dei client. In questo modo, alla connessione di un client può inviargli lo stato corrente (_started_ o _stopped_), così che l'interfaccia HTML sia coerente con lo stato attuale del sistema. Inoltre, alla disconnessione, se non ci sono più client connessi fa uno _Stop_ automatico per evitare sprechi di risorse;
-     * Ogni qualvolta lo stato cambia (da _started_ a _stopped_ o viceversa), notifica i client di questo cambiamento.
+     * Ogni qualvolta un client cambia lo stato (da _started_ a _stopped_ o viceversa), notifica i client di questo cambiamento.
 
  6. Creata anche l'interfaccia [Hubs/IImageStreamClient.cs](Hubs/IImageStreamClient.cs) che viene implementata dall'_hub_ in modo che si possa invocare la funzione JavaScript sul client in maniera fortemente tipizzata;
  

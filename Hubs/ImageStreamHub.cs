@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AspNetCoreRealtimeBinary.HostedServices;
 using AspNetCoreRealtimeBinary.Models.Services.Infrastructure;
 using Microsoft.AspNetCore.SignalR;
 
@@ -14,17 +13,18 @@ namespace AspNetCoreRealtimeBinary.Hubs
         public ImageStreamHub(ITaskStartStop taskStartStop)
         {
             this.taskStartStop = taskStartStop;
-            this.taskStartStop.StatusChanged += NotifyClients;
         }
 
-        public void Start()
+        public Task Start()
         {
-            taskStartStop.Start();
+            var (success, currentStatus) = taskStartStop.Start();
+            return NotifyClientsIfNeeded(success, currentStatus);
         }
 
-        public void Stop()
+        public Task Stop()
         {
-            taskStartStop.Stop();
+            var (success, currentStatus) = taskStartStop.Stop();
+            return NotifyClientsIfNeeded(success, currentStatus);
         }
 
         private static int connectedClientCount = 0;
@@ -45,20 +45,13 @@ namespace AspNetCoreRealtimeBinary.Hubs
             return Task.CompletedTask;
         }
 
-        private async void NotifyClients(object sender, string newStatus)
+        private Task NotifyClientsIfNeeded(bool success, string currentStatus)
         {
-            await Clients.All.NotifyStatusChange(newStatus);
-        }
-
-        private bool disposed = false;
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && !disposed)
+            if (!success)
             {
-                this.taskStartStop.StatusChanged -= NotifyClients;
-                disposed = true;
+                return Task.CompletedTask;
             }
-            base.Dispose(disposing);
+            return Clients.All.NotifyStatusChange(currentStatus);
         }
     }
 }
